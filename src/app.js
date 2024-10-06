@@ -6,6 +6,15 @@ app.listen(7777, () => {
     console.log("Server created Successfully");
 });
 
-app.use('/test',(req, res) => {
-    res.send("HELLO test!")
+
+app.get('/user',(req, res) => {
+    res.send("HELLO Hello Hello!")
+})
+
+app.use('/',(req, res) => {
+    res.send("HELLO Yashu!")
+})
+
+app.post('/user',(req, res) => {
+    res.send("HELLO from post!")
 })
