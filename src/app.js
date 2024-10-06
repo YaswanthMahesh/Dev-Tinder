@@ -7,14 +7,8 @@ app.listen(7777, () => {
 });
 
 
-app.get('/user',(req, res) => {
-    res.send("HELLO Hello Hello!")
+app.get('/user/:userId',(req, res) => {
+    console.log(req.params);
+    res.send({firstName: "Yaswanth", lastName: "Nandigam"});
 })
 
-app.use('/',(req, res) => {
-    res.send("HELLO Yashu!")
-})
-
-app.post('/user',(req, res) => {
-    res.send("HELLO from post!")
-})
