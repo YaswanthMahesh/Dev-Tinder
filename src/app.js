@@ -7,31 +7,34 @@ const app = express();
 
 app.listen('7777');
 
-app.use("/user", auth)
+// app.use("/user", auth)
 
+
+app.use("/", (err,req,res,next) => {
+    console.log("First error handler")
+    res.status(500).send("unfortunate error")
+})
 
 app.use(
-    "/user/getAllUserData", 
+    "/getAllUserData", 
     (req, res) => {
-        res.send("All user data send");       
+        try{
+            throw new Error("hdhdhjdh")
+            res.send("All user data send");     
+        }
+        catch(err){
+            res.status(500).send("Something went wrong")
+
+        }
+          
     }
 );
 
-app.use("/admin", (req, res) => {
-    res.send("Authorizing admin data")
+app.use("/", (err,req,res,next) => {
+    console.log("Second error handler")
+    res.status(500).send("unfortunate error")
 })
 
-
-app.use("/user/deleteUser", (req,res)=>{
-    const auth = "xyz"
-        if(auth === 'xyz'){
-            console.log("user authenticated");
-            res.send("User Data Deleted");
-        }
-        else{
-            res.status(401).send("Unauthorized user")
-        }       
-})
 
 
 
