@@ -41,3 +41,35 @@
 - Create a User Schema, user model
 - Create /signUp API to add data to database
 - Push some documents using POST API call
+
+- Difference between Javascript Object vs JSON
+- Add the express.json middlewate to your app
+- Make ypour signup API dynamic to receive data from the end user
+- user.findone with duplicate emailId's, which object will be removed
+- API - Get user By Email
+- API - Feed API - GET /feed - get all the usrs from the database
+- API - Get User By Id
+- Create a delete user API
+- Diff b/w Patch and PUT
+- API - UPDATE A User
+- Explore documentation expecially Model methods
+- What are options in Model.findOneAndUpdate method, explore more about it
+- API- Update user with email
+
+- Explore SchemaTYpe options from the documentation
+- Add required, unique, lowercase, min, minLength, trim
+- Add default
+- Create a custom validator function for gender
+- Improve the DB Schema, PUT all appropriate validations on each field in Schema
+- Add API level validations on patch,signup post api
+- ( Data Sanitization )Add API level validations for each field
+- Install Validator
+- Explore Validator library and use Validator for password, email and photo url
+- Never trust req.body
+
+- Validate data in SignUp API
+- Maintain a helper function
+- Install dcrypt package
+- create passwordHash using  bCrypt.hash & save the user
+- Create login API
+- compare passwords and throw errors if email or passowrd are not present
