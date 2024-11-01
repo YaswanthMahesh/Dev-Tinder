@@ -1,15 +1,16 @@
 const express = require("express");
-
 const connectDb = require("./config/database.js")
-
 const User = require("./models/user")
-
 const {validateData} = require("./utils/validation")
 const bcrypt = require("bcrypt")
+const cookieParser = require("cookie-parser")
+const jwt = require("jsonwebtoken")
+const {auth} = require("./middlewares/auth")
 
 const app = express();
 
 app.use(express.json())
+app.use(cookieParser())
 
 app.post ("/signUp", async (req,res) => {
 
@@ -47,15 +48,22 @@ app.post ("/signUp", async (req,res) => {
 app.post("/login", async (req, res) => {
 
     try{
-        const user = await User.findOne({email: req.body.email})
+        const {email, password} = req.body
+        const user = await User.findOne({email: email})
 
         if(!user)
             throw new Error("Invalid credentials")
 
-        const result = await bcrypt.compare(req.body.password, user.password)
+        const result = await user.validatePassword(password)
 
-        if(result)
+        if(result){
+
+            const token = await user.getJWT()
+
+            res.cookie("token", token, {expires: new Date(Date.now() + 3600000)})
             res.send("Login Successful")
+        }
+            
         else
             throw new Error("Invalid Creds!")
     }
@@ -63,6 +71,21 @@ app.post("/login", async (req, res) => {
         res.status(500).send(error.message)
     }
 
+})
+
+app.get("/profile", auth, async (req, res) => {
+    try{
+        const user = req.user
+        res.send(user)
+    }
+    catch(error){
+        res.status(400).send("Invalid credentials: " + error.message)
+    }
+})
+
+app.post("/sendConnectionRequest", auth, (req, res)=>{
+    const user = req.user;
+    res.send(user.firstName + " sent Connection request!")
 })
 
 
