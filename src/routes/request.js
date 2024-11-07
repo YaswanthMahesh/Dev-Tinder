@@ -100,4 +100,4 @@ requestRouter.post("/request/review/:status/:requestId", auth, async (req, res) 
     }
 })
 
-module.exports = re
+module.exports = requestRouter
