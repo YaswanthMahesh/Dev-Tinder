@@ -1,17 +1,16 @@
 const mongoose = require("mongoose")
 
-const status = ["interested", "rejected", "pending", "ignore"]
-
 const connectionRequest = mongoose.Schema({
     fromUserId: {
         type: mongoose.Schema.ObjectId,
-        required: true
+        ref: "user",
+        required: true,
     },
-    toUserId: {type: mongoose.Schema.ObjectId},
+    toUserId: {type: mongoose.Schema.ObjectId, ref: "user"},
     status: {
         type: String,
         enum: {
-            values: ["interested", "rejected", "pending", "ignore"],
+            values: ["interested", "rejected", "pending", "ignore", "accepted"],
             message: '{VALUE} is not a valid status'
         }
     }

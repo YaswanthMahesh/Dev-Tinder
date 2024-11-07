@@ -20,14 +20,16 @@ requestRouter.post("/request/send/:status/:toUserId", auth, async (req, res)=>{
         if(!toUser)
             return res.status(400).send("Request send to Invalid User")
 
-         // Checking if request is sent to yourself
-        // if(toUser.equals(fromUser))
-        //     return res.status(400).send("Can't send request to yourself")
-
         // Checking if request already sent either in one way or another
         const isRequestPresent = await ConnectionRequest.findOne({
-            $or: [{fromUserId, toUserId},{fromUser: toUserId, toUserId: fromUserId}]
+            $or: [
+                {fromUserId: fromUserId, toUserId: toUserId},
+                {fromUserId: toUserId, toUserId: fromUserId}
+            ]
+
         })
+
+        
 
         if(isRequestPresent){
             return res.status(400).send("Request already sent!")
@@ -37,8 +39,8 @@ requestRouter.post("/request/send/:status/:toUserId", auth, async (req, res)=>{
 
         const connectionRequest = new ConnectionRequest({
         fromUserId: fromUser._id,
-        toUserId: req.params.toUserId,
-        status: req.params.status,
+        toUserId: toUserId,
+        status: status,
 
         })
 
@@ -50,6 +52,54 @@ requestRouter.post("/request/send/:status/:toUserId", auth, async (req, res)=>{
         res.status(400).send("Error " + error.message)
     }
    
+})
+
+requestRouter.post("/request/review/:status/:requestId", auth, async (req, res) => {
+
+    try {
+        const loggedInUser = req.user;
+
+        const {status, requestId} = req.params
+
+        console.log(status + " " + requestId)
+
+        // Status should be valid
+        const allowedStatus = ["accepted", "rejected"]
+        if(!allowedStatus.includes(status))
+            return res.status(400).json({message: "The status " + status + " is not valid!"})
+
+        const connectionRequest = await ConnectionRequest.findOne({
+            _id: requestId,
+            status: "interested",
+            toUserId: loggedInUser._id
+        })
+
+        if(!connectionRequest)
+            return res.status(404).send("Data is not found!")
+
+        console.log(connectionRequest)
+
+        connectionRequest.status = status
+
+        console.log(connectionRequest)
+
+        console.log(status)
+
+        const data = await connectionRequest.save()
+
+        console.log(data)
+
+        return res.json({
+            message: "Request processed successfully!", data
+        })
+
+        // Valid requestId
+        // status should be interested}
+        // fromUserId should be loggedInUser 
+    }
+    catch(error){
+        res.status(500).send("Error " + error.message)
+    }
 })
 
 module.exports = requestRouter

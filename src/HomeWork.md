@@ -110,3 +110,8 @@
 - Read this article about compound indexes - F
 - Why shouldn't we index on everything?
 - ALWAYS THINK ABOUT CORNER CASES
+
+- Write code with proper validation for POST /request/review/:status/:requestId
+- Thought process - POST vs GETf
+- Read about ref and populate
+- Create GET /user/requests/received with all the checks
