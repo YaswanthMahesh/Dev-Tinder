@@ -115,3 +115,6 @@
 - Thought process - POST vs GETf
 - Read about ref and populate
 - Create GET /user/requests/received with all the checks
+
+- Logic for GET /feed API
+- Explore $nin, $ne, $and and other query operators - https://www.mongodb.com/docs/manual/reference/operator/query/ne/

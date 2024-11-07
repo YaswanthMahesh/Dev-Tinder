@@ -29,8 +29,6 @@ requestRouter.post("/request/send/:status/:toUserId", auth, async (req, res)=>{
 
         })
 
-        
-
         if(isRequestPresent){
             return res.status(400).send("Request already sent!")
         }
@@ -64,7 +62,7 @@ requestRouter.post("/request/review/:status/:requestId", auth, async (req, res) 
         console.log(status + " " + requestId)
 
         // Status should be valid
-        const allowedStatus = ["accepted", "rejected"]
+        const allowedStatus = ["accepted", "rejected", "ignored"]
         if(!allowedStatus.includes(status))
             return res.status(400).json({message: "The status " + status + " is not valid!"})
 
@@ -102,4 +100,4 @@ requestRouter.post("/request/review/:status/:requestId", auth, async (req, res) 
     }
 })
 
-module.exports = requestRouter
+module.exports = re
